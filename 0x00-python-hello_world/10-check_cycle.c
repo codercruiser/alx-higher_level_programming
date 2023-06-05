@@ -1,19 +1,18 @@
 #include "lists.h"
-#include <stdio.h>
 
 int check_cycle(listint_t *list)
 {
-	listint_t *cursor;
-	listint_t *head;
+    listint_t *curt;
+    listint_t *head;
 
-	hd = list;
-	cur = list;
-	while (cur != NULL && cur->next != NULL)
-	{
-		hd = hd->next;
-		cur = cur->next->next;
-		if (hd == cur)
-			return (1);
-	}
-	return (0);
+    head = list;
+    curt = list;
+    while (curt != NULL && curt->next != NULL)
+    {
+        head = head->next;
+        curt = curt->next->next;
+        if (head == curt)
+            return 1;
+    }
+    return 0;
 }
