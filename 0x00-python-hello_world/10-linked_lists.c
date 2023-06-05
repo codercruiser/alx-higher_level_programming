@@ -9,19 +9,18 @@
  */
 size_t print_listint(const listint_t *h)
 {
-	const listint_t *curt;
-	unsigned int n; /* number of nodes */
+    const listint_t *curt;
+    size_t n = 0;
 
-	curt = h;
-	n = 0;
-	while (curt != NULL)
-	{
-		printf("%i\n", curt->n);
-		curt = curt->next;
-		n++;
-	}
+    curt = h;
+    while (curt != NULL)
+    {
+        printf("%d\n", curt->n);
+        curt = curt->next;
+        n++;
+    }
 
-	return (n);
+    return n;
 }
 
 /**
@@ -30,19 +29,19 @@ size_t print_listint(const listint_t *h)
  * @n: integer to be included in node
  * Return: address of the new element or NULL if it fails
  */
-listint_t *add_nodeint(listint_t **hd, const int n)
+listint_t *add_nodeint(listint_t **head, const int n)
 {
-	listint_t *new;
+    listint_t *new_node;
 
-	new = malloc(sizeof(listint_t));
-	if (new == NULL)
-		return (NULL);
+    new_node = malloc(sizeof(listint_t));
+    if (new_node == NULL)
+        return NULL;
 
-	new->n = n;
-	new->next = *hd;
-	*hd = new;
+    new_node->n = n;
+    new_node->next = *head;
+    *head = new_node;
 
-	return (new);
+    return new_node;
 }
 
 /**
@@ -50,14 +49,14 @@ listint_t *add_nodeint(listint_t **hd, const int n)
  * @head: pointer to list to be freed
  * Return: void
  */
-void free_listint(listint_t *hd)
+void free_listint(listint_t *head)
 {
-	listint_t *curt;
+    listint_t *curt;
 
-	while (hd != NULL)
-	{
-		curt = hd;
-		hd = hd->next;
-		free(curt);
-	}
+    while (head != NULL)
+    {
+        curt = head;
+        head = head->next;
+        free(curt);
+    }
 }
