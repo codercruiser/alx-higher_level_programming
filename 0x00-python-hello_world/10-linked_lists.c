@@ -4,15 +4,15 @@
 
 /**
  * print_listint - prints all elements of a listint_t list
- * @h: pointer to head of list
+ * @hd: pointer to head of list
  * Return: number of nodes
  */
-size_t print_listint(const listint_t *h)
+size_t print_listint(const listint_t *hd)
 {
     const listint_t *curt;
     size_t n = 0;
 
-    curt = h;
+    curt = hd;
     while (curt != NULL)
     {
         printf("%d\n", curt->n);
@@ -31,32 +31,32 @@ size_t print_listint(const listint_t *h)
  */
 listint_t *add_nodeint(listint_t **head, const int n)
 {
-    listint_t *new_node;
+    listint_t *new_hd;
 
-    new_node = malloc(sizeof(listint_t));
-    if (new_node == NULL)
+    new_hd = malloc(sizeof(listint_t));
+    if (new_hd == NULL)
         return NULL;
 
-    new_node->n = n;
-    new_node->next = *head;
-    *head = new_node;
+    new_hd->n = n;
+    new_hd->next = *head;
+    *head = new_hd;
 
-    return new_node;
+    return new_hd;
 }
 
 /**
  * free_listint - frees a listint_t list
- * @head: pointer to list to be freed
+ * @hd: pointer to list to be freed
  * Return: void
  */
-void free_listint(listint_t *head)
+void free_listint(listint_t *hd)
 {
     listint_t *curt;
 
-    while (head != NULL)
+    while (hd != NULL)
     {
-        curt = head;
-        head = head->next;
+        curt = hd;
+        hd = hd->next;
         free(curt);
     }
 }
