@@ -10,18 +10,18 @@
 size_t print_listint(const listint_t *h)
 {
 	const listint_t *current;
-	unsigned int new_variable; /* number of nodes */
+	unsigned int n; /* number of nodes */
 
 	current = h;
-	new_variable = 0;
+	n = 0;
 	while (current != NULL)
 	{
-		printf("%i\n", current->new_variable);
+		printf("%i\n", current->n);
 		current = current->next;
-		new_variable++;
+		n++;
 	}
 
-	return (new_variable);
+	return (n);
 }
 
 /**
@@ -41,7 +41,7 @@ listint_t *add_nodeint_end(listint_t **head, const int n)
 	if (new == NULL)
 		return (NULL);
 
-	new->new_variable = n;
+	new->n = n;
 	new->next = NULL;
 
 	if (*head == NULL)
@@ -72,4 +72,3 @@ void free_listint(listint_t *head)
 		free(current);
 	}
 }
-
