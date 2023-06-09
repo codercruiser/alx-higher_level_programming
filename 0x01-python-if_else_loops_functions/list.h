@@ -3,7 +3,7 @@
 
 /**
  * struct listint_s - singly linked list
- * @new_variable: integer
+ * @n: integer
  * @next: points to the next node
  *
  * Description: singly linked list node structure
@@ -11,7 +11,7 @@
  */
 typedef struct listint_s
 {
-	int new_variable;
+	int n;
 	struct listint_s *next;
 } listint_t;
 
@@ -22,4 +22,3 @@ void free_listint(listint_t *head);
 listint_t *insert_node(listint_t **head, int number);
 
 #endif /* LISTS_H */
-
