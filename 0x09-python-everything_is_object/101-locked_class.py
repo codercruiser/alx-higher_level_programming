@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"""class with predefined number of slots"""
+"""blocked class module"""
 
 
 class LockedClass:
-    """if user defined, no new items can be added to list"""
+    """object prevents dynamic attribute"""
+
     __slots__ = ['first_name']

@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-"""0x11. Python - Network #1, task 6. POST an email #1
 """
+Sends a POST request to the passed URL
+"""
+import sys
+import requests
+
 
 if __name__ == "__main__":
-    from requests import post
-    from sys import argv
-
-    response = post(argv[1], data={'email': argv[2]})
+    email = {"email": sys.argv[2]}
+    response = requests.post(sys.argv[1], email)
     print(response.text)

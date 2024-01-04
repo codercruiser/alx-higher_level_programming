@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-"""0x11. Python - Network #1, task 5. Response header value #1
 """
+it sends a request and display the value of the variable X-Request-Id
+"""
+import requests
+import sys
+
 
 if __name__ == "__main__":
-    from requests import get
-    from sys import argv
-
-    response = get(argv[1])
-    print(response.headers.get('x-request-id'))
+    req = requests.get(sys.argv[1])
+    req1 = req.headers.get('X-Request-Id')
+    print(req1)

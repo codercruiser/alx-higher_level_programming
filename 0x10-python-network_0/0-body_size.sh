@@ -1,3 +1,3 @@
 #!/bin/bash
-# displays body size of HTTP response in bytes
-curl -sI "$1" | grep 'Content-Length' | sed 's/^Content-Length: //'
+# it sends a request to url and display the length
+curl -si $1 | grep Content-Length | tail -c 4

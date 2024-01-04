@@ -1,14 +1,17 @@
 #!/usr/bin/python3
-"""0x11. Python - Network #1, task 0. What's my status? #0
-"""
+'''
+Makes a request and prints information about the body of the response
+'''
 
-if __name__ == "__main__":
-    from urllib import request
+from urllib.request import urlopen
 
-    with request.urlopen('https://intranet.hbtn.io/status') as response:
-        html = response.read()
-    print('Body response:')
-    print('\t- type: {}'.format(type(html)))
-    print('\t- content: {}'.format(html))
-    print('\t- utf8 content: {}'.format(html.decode('utf-8')))
-    # charset can be gained with response.headers.get_content_charset()
+URL = 'https://alx-intranet.hbtn.io/status'
+
+if __name__ == '__main__':
+
+    with urlopen(URL) as r:
+        body = r.read()
+        print("Body response:")
+        print("\t- type:", type(body))
+        print("\t- content:", body)
+        print("\t- utf8 content:", body.decode())

@@ -1,3 +1,3 @@
 #!/bin/bash
-# follow redirect in 200 status code HTTP response and display content
-curl -sL "$1"
+# use curl to display the body of a request
+curl -Ls $1

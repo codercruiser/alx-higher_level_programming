@@ -1,35 +1,25 @@
 #!/usr/bin/python3
-"""Module built for Python 0x07 task 4. Error in project formatting scheme \
-advances file numbering +1 for every task after 0.
+"""
+This is the "5-test_indentation" module.
+The 5-text_indentation module supplies one function, text_indentation(text).
 """
 
 
 def text_indentation(text):
-    """Function that prints text with 2 new lines after each of the \
-characters '.',',', and '?' :
-
-    Args:
-        text (str): text to be edited
-
-    """
+    """splits a text into lines along "?", ":", "." followed by 2 new lines"""
     if type(text) is not str:
-        raise TypeError('text must be a string')
-
-    j = 0
-    delims = '.?:'
-
-    for i, char in enumerate(text):
-        for delim in delims:
-            if char is delim:
-                j += 1
-                text = text[:i + j] + ' ' + text[i + j:]
-
-    list = text.split()
-
-    for word in list:
-        if word[-1:] is "." or word[-1:] is "?" or word[-1:] is ":":
-            print(word, end="\n\n")
-        elif word is list[len(list) - 1]:
-            print(word, end="")
-        else:
-            print(word, end=" ")
+        raise TypeError("text must be a string")
+    flag = 0
+    for a in text:
+        if flag == 0:
+            if a == ' ':
+                continue
+            else:
+                flag = 1
+        if flag == 1:
+            if a == '?' or a == '.' or a == ':':
+                print(a)
+                print()
+                flag = 0
+            else:
+                print(a, end="")

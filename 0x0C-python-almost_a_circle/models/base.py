@@ -1,295 +1,247 @@
 #!/usr/bin/python3
-"""0x0C. Python - Almost a circle, task 1, 15-20"""
+
+import importlib_metadata
+
+
+import turtle
 import json
 import csv
 
 
+# from models.rectangle import Rectangle
+"""
+Base class
+"""
+
+
 class Base:
-    """Assigns `id` and manages related attributes across all instances.
-
-    Assigns valid id from arg, or without an arg the current count of
-    instances, `__nb_objects`. Added features not in project instructions:
-    `__assigned_ids` (set) of (int): set of all ids assigned at least once
-    `__serial` (int) + getter/setter: `__nb_objects` after self.__init__, does
-    not change even if `id` does
-
-    Args:
-        id (int): identifying number for each instance of cls, may be assigned
-            to multiple instances
-
-    Attributes:
-        __nb_objects (int): number of `Base` instances not assigned id at
-            initialization
-        __true_nb_objects (int): total all of `Base` instances
-        __assigned_ids (set) of (ints): set of all `id` numbers assigned at
-            least once
-
-    Project tasks:
-        1. Base class - /models, __init__.py, class Base, __init__
-
+    """
+    Base class for out Classes
     """
     __nb_objects = 0
-    __true_nb_objects = 0
-    __assigned_ids = set()
-
-    # attribute assigment here engages setters defined below
 
     def __init__(self, id=None):
-        if id is not None:
-            # init with custom id, or reassignment from update()
-            self.id = id
-            # true total up and serial set only after id validated
-            Base.__true_nb_objects += 1
-            self.serial = Base.__true_nb_objects
-            Base.__assigned_ids.add(self.id)
-        else:
-            # per project instructions, __nb_objects up only with no id arg
+        """Instantiate the Base"""
+        if id is None:
             Base.__nb_objects += 1
             self.id = Base.__nb_objects
-            # update true total, serial and assigned id set
-            Base.__true_nb_objects += 1
-            self.serial = Base.__true_nb_objects
-            Base.__assigned_ids.add(self.id)
-
-    @property
-    def id(self):
-        """Getter for `id`
-
-        Returns:
-            __id (int): unique identifer for each instance of cls
-
-        """
-        return self.__id
-
-    @id.setter
-    def id(self, value):
-        """Args:
-            value (int): number to be assigned as id
-
-        Attributes:
-            __id (int): unique identifer for each instance of cls
-
-        Raises:
-            ValueError: if `id` arg is 0, negative, or already assigned.
-
-        """
-        if value < 1:
-            raise ValueError('id must be positive')
-        self.__id = value
-
-    @property
-    def serial(self):
-        """Getter for `serial`
-
-        Returns:
-            __serial (int): unique identifer for each instance of cls, taken
-                from __true_nb_objects at time of instantiation
-
-        """
-        return self.__serial
-
-    @serial.setter
-    def serial(self, value):
-        """Args:
-            value (int): number to be assigned as `serial`
-
-        Attributes:
-            __serial (int): unique identifer for each instance of cls, taken
-                from __true_nb_objects at time of instantiation
-        """
-        self.__serial = value
+        else:
+            self.id = id
 
     @staticmethod
     def to_json_string(list_dictionaries):
-        """Converts list of dictionaries into JSON string.
-
-        Args:
-            list_dictionaries (list) of (dict): list to be converted
-
-        Returns:
-            JSON format string of `list_dictionaries`, or '[]' if None or
-                empty
-
-        Project tasks:
-            15. Dictionary to JSON string - static method `to_json_string()`
-                 that returns the JSON string representation of
-                 list_dictionaries, or [] if None
-
-        """
-        if list_dictionaries is None or list_dictionaries == []:
-            return '[]'
-        else:
-            return json.dumps(list_dictionaries)
+        """convert python dict to json"""
+        if (list_dictionaries is None):
+            return "[]"
+        return json.dumps(list_dictionaries)
 
     @classmethod
     def save_to_file(cls, list_objs):
-        """Saves to file a JSON formatted string of a list of dictionary
-        representations of objects of `Base` derived classes.
-
-        Args:
-            list_objs (list) of (dict): list of `Base` derived objects (in
-                this project `Rectangle` and `Square`)
-
-        Project tasks:
-            16. JSON string to file - class method `save_to_file()` that writes
-                the JSON string representation of `list_objs` to a file, using
-                `to_json_string()`, overwriting existing file, class name in
-                filename, if list None then list = []
-
-        """
-        if list_objs is None:
-            list_objs = []
-
-        list_dicts = []
-        for item in list_objs:
-            list_dicts.append(item.to_dictionary())
-        json_dict = cls.to_json_string(list_dicts)
-
-        filename = cls.__name__ + '.json'
-        with open(filename, 'w', encoding='utf-8') as file:
-            file.write(json_dict)
+        """write json string representation of list_objs to file"""
+        filename = cls.__name__ + ".json"
+        x = []
+        if list_objs is not None:
+            for i in list_objs:
+                x.append(cls.to_dictionary(i))
+        with open(filename, 'w') as f:
+            f.write(cls.to_json_string(x))
 
     @staticmethod
     def from_json_string(json_string):
-        """Returns list of objects represented by JSON format string,
-        or [] if `json_string` is None or empty
-
-        Args:
-            json_string (str): JSON format string to be converted
-
-        Returns:
-            List of objects represented by JSON format string, or [] if
-                `json_string` is None or empty
-
-        Project tasks:
-            17. JSON string to dictionary - static method `from_json_string()`
-                that returns the list of the JSON string representation
-                `json_string`, a string representing a list of dictionaries,
-                or if None or empty, return an empty list
-
-        """
-        if json_string is None or json_string == '':
+        """It returns the list of json string representation"""
+        if json_string is None or len(json_string) == 0:
             return []
         return json.loads(json_string)
 
     @classmethod
     def create(cls, **dictionary):
-        """Creates a new dummy instance of class and `update()`s it using
-        `dictionary` as keyword args
-
-        Args:
-            dictionary (dict): dictionary to be used as keyword args
-
-        Project tasks:
-            18. Dictionary to Instance - class method `create()` that creates
-                a new dummy instance and `update()`s it with values in
-                `dictionary` as keyword args
-
-        """
-        if cls.__name__ is 'Rectangle':
-            temp = cls(1, 1)
-        elif cls.__name__ is 'Square':
-            temp = cls(1)
-        temp.update(**dictionary)
-        return temp
+        """returns an instance with all attributes already set"""
+        if cls.__name__ == "Rectangle":
+            clas = cls(1, 1)
+        elif cls.__name__ == "Square":
+            clas = cls(1)
+        clas.update(**dictionary)
+        return clas
 
     @classmethod
     def load_from_file(cls):
-        """Returns list of instances from file <class name>.json, or empty list
-        if no file. `cls` determines class of instances.
-
-        Returns:
-            list of instances of `cls` from file <class name>.json, or empty
-                list if no file
-
-        Project tasks:
-            19. File to instances - class method `load_from_file()` returns
-                list of instances from file <Class name>.json, or empty list
-                if no file. must use `from_json_string()` and `create()`,
-                class of instances in list depends on cls
-
-        """
-        import os.path
-
-        filename = cls.__name__ + '.json'
-        if os.path.exists(filename):
-            with open(filename, 'r', encoding='utf-8') as file:
-                json_str = file.read()
-        else:
-            return []
-        obj_list = cls.from_json_string(json_str)
-        instance_list = []
-        for item in obj_list:
-            instance_list.append(cls.create(**item))
-        return instance_list
+        """It returns a list of instance"""
+        filename = cls.__name__ + ".json"
+        lis = []
+        try:
+            with open(filename, "r") as f:
+                lis = cls.from_json_string(f.read())
+            for i in range(len(lis)):
+                lis[i] = cls.create(**lis[i])
+        except:
+            pass
+        return lis
 
     @classmethod
     def save_to_file_csv(cls, list_objs):
-        """Saves to file a CSV formatted string of a list of dictionary
-        representations of objects of `Base` derived classes.
-
-        Args:
-            list_objs (list) of (dict): list of `Base` derived objects (in
-                this project `Rectangle` and `Square`)
-
-        Project tasks:
-            20. JSON ok, but CSV? - class method `save_from_file_csv()`
-                returns list of instances from file <Class name>.csv, or empty
-                list if no file. must use `from_json_string()` and `create()`,
-                class of instances in list depends on cls
-
-        """
-        if list_objs is None:
-            list_objs = []
-
-        if cls.__name__ == 'Rectangle':
-            keys = ('id', 'width', 'height', 'x', 'y')
-        elif cls.__name__ == 'Square':
-            keys = ('id', 'size', 'x', 'y')
-
-        list_dicts = []
-        for item in list_objs:
-            list_dicts.append(item.to_dictionary())
-
-        filename = cls.__name__ + '.csv'
-        with open(filename, 'w', encoding='utf-8') as file:
-            csv_writer = csv.DictWriter(file, keys)
-            csv_writer.writeheader()
-            for dict in list_dicts:
-                csv_writer.writerow(dict)
-
+        """returns an instance with all attributes already set"""
+        filename = cls.__name__ + ".csv"
+        with open(filename, "w", newline='') as f:
+            write = csv.writer(f)
+            if cls.__name__ == "Rectangle":
+                for obj in list_objs:
+                    write.writerow([obj.id, obj.width, obj.height,
+                    obj.x, obj.y])
+            elif cls.__name__ == "Square":
+                for obj in list_objs:
+                    write.writerow([obj.id, obj.size, obj.x, obj.y])
     @classmethod
     def load_from_file_csv(cls):
-        """Returns list of instances from file <class name>.csv, or empty list
-        if no file. `cls` determines class of instances.
+        """serializes a list of Rectangles/Squares in csv"""
+        filename = cls.__name__ + ".csv"
+        l = []
+        try:
+            with open(filename, 'r') as f:
+                read = csv.reader(f)
+                for args in read:
+                    if cls.__name__ == "Rectangle":
+                        dictionary = {"id": int(args[0]),
+                                    "width": int(args[1]),
+                                    "height": int(args[2]),
+                                    "x": int(args[3]),
+                                    "y": int(args[4])
+                            }
+                    elif cls.__name__ == "Square":
+                        dictionary = {"id": int(args[0]), "size": int(args[1]),
+                                    "x": int(args[2]), "y": int(args[3])}
+                    obj = cls.create(**dictionary)
+                    l.append(obj)
+        except:
+            pass
+        return l
 
-        Returns:
-            list of instances of `cls` from file <class name>.csv, or empty
-                list if no file
+    
+    @staticmethod
+    def draw(list_rectangles, list_squares):
+        """opens a window and draws all the Rectangles and Squares"""
+        screen_width = 620
+        padding = 10
+        row_width = padding
+        row_height = 0
+        screen_height = padding
+        color_list = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo',
+                      'violet']
+        color_size = len(color_list)
+        color_index = 0
+        for rect in list_rectangles:
+            potential_width = row_width + rect.width + rect.x + padding
+            if (row_width == padding or potential_width < screen_width):
+                row_width += rect.width + rect.x + padding
+                if (row_height < rect.height + rect.y):
+                    row_height = rect.height + rect.y
+            else:
+                screen_height += row_height + padding
+                row_width = rect.width + rect.x + padding * 2
+                row_height = rect.height + rect.y
 
-        Project tasks:
-            20. JSON ok, but CSV? - class method `load_from_file_csv()`
-                returns list of instances from file <Class name>.csv, or empty
-                list if no file. must use `from_json_string()` and `create()`,
-                class of instances in list depends on cls
+        for square in list_squares:
+            potential_width = row_width + square.size + square.x + padding
+            if (row_width == padding or potential_width < screen_width):
+                row_width += square.size + square.x + padding
+                if (row_height < square.size + square.y):
+                    row_height = square.size + square.y
+            else:
+                screen_height += row_height + padding
+                row_width = square.size + square.x + padding * 2
+                row_height = square.size + square.y
+        turtle.screensize(canvwidth=screen_width, canvheight=screen_height)
+        turtle.pu()
+        turtle.left(180)
+        turtle.forward(screen_width/2 - padding)
+        turtle.right(90)
+        turtle.forward(screen_height/2 - padding)
+        turtle.right(90)
+        row_width = padding
+        row_height = 0
+        for rect in list_rectangles:
+            potential_width = row_width + rect.width + rect.x + padding
+            if (row_width == padding or potential_width < screen_width):
+                row_width += rect.width + rect.x + padding
+                if (row_height < rect.height + rect.y):
+                    row_height = rect.height + rect.y
+            else:
+                turtle.pu()
+                turtle.left(180)
+                turtle.forward(row_width - padding)
+                turtle.left(90)
+                turtle.forward(row_height + padding)
+                turtle.left(90)
+                row_width = rect.width + rect.x + padding * 2
+                row_height = rect.height + rect.y
+            turtle.pd()
+            turtle.pencolor(color_list[color_index % color_size])
+            for _ in range(4):
+                turtle.forward(5)
+                turtle.back(5)
+                turtle.right(90)
+            turtle.pu()
+            turtle.forward(rect.x)
+            turtle.right(90)
+            turtle.forward(rect.y)
+            turtle.left(90)
+            turtle.pd()
+            turtle.pencolor('black')
+            turtle.fillcolor(color_list[color_index % color_size])
+            turtle.begin_fill()
+            for _ in range(2):
+                turtle.forward(rect.width)
+                turtle.right(90)
+                turtle.forward(rect.height)
+                turtle.right(90)
+            turtle.end_fill()
+            color_index += 1
+            turtle.pu()
+            turtle.forward(rect.width + padding)
+            turtle.left(90)
+            turtle.forward(rect.y)
+            turtle.right(90)
 
-        """
-        import os.path
+        for square in list_squares:
+            potential_width = row_width + square.size + square.x + padding
+            if (row_width == padding or potential_width < screen_width):
+                row_width += square.size + square.x + padding
+                if (row_height < square.size):
+                    row_height = square.size + square.y
+            else:
+                turtle.pu()
+                turtle.left(180)
+                turtle.forward(row_width - padding)
+                turtle.left(90)
+                turtle.forward(row_height + padding)
+                turtle.left(90)
+                row_width = square.size + square.x + padding * 2
+                row_height = square.size + square.y
+            turtle.pd()
+            turtle.pencolor(color_list[color_index % color_size])
+            for _ in range(4):
+                turtle.forward(5)
+                turtle.back(5)
+                turtle.right(90)
+            turtle.pu()
+            turtle.forward(square.x)
+            turtle.right(90)
+            turtle.forward(square.y)
+            turtle.left(90)
+            turtle.pd()
+            turtle.pencolor('black')
+            turtle.fillcolor(color_list[color_index % color_size])
+            turtle.begin_fill()
+            for _ in range(4):
+                turtle.forward(square.size)
+                turtle.right(90)
+            turtle.end_fill()
+            color_index += 1
+            turtle.pu()
+            turtle.forward(square.size + padding)
+            turtle.left(90)
+            turtle.forward(square.y)
+            turtle.right(90)
 
-        if cls.__name__ == 'Rectangle':
-            keys = ('id', 'width', 'height', 'x', 'y')
-        elif cls.__name__ == 'Square':
-            keys = ('id', 'size', 'x', 'y')
+        turtle.getscreen()._root.mainloop()
 
-        filename = cls.__name__ + '.csv'
-        if os.path.exists(filename):
-            with open(filename, 'r', encoding='utf-8') as file:
-                csv_reader = csv.DictReader(file)
-                instance_list = []
-                for row in csv_reader:
-                    for key in keys:
-                        row[key] = int(row[key])
-                    instance_list.append(cls.create(**row))
-                return instance_list
-        else:
-            return []
+    

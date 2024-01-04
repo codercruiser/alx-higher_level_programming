@@ -1,9 +1,7 @@
 #!/usr/bin/python3
-""" 0x0A. Python - Inheritance, task 5 """
+"""creating BaseGeometry class"""
 
 
 class BaseGeometry:
-    """Intentionally empty class.
-
-    """
+    """empty class"""
     pass

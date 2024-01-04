@@ -6,77 +6,66 @@ max_integer = __import__('6-max_integer').max_integer
 
 
 class TestMaxInteger(unittest.TestCase):
-    def test_list_type(self):
-        """The argument 'list' must be an iterable type such as list, tuple or
-        str; or a TypeError will arise. Sets are iterable but not indexable,
-        which will also cause a TypeError.
-        """
-        # TypeError raised when list is not an iterable type
-        self.assertRaises(TypeError, max_integer, 5)
-        self.assertRaises(TypeError, max_integer, True)
-        # TypeError also for sets, as they cannot be indexed
-        self.assertRaises(TypeError, max_integer, {3, 5})
-        # program intended for lists
-        self.assertEqual(max_integer([3, 5]), 5)
-        # but also works with tuples
-        self.assertEqual(max_integer((3, 5)), 5)
-        # and strings, with each character evaluted by ASCII value
-        self.assertEqual(max_integer('actg'), 't')
+    """unittest class for max_integer"""
+    def test_module_docstring(self):
+        """Tests for module docsting"""
+        m = __import__('6-max_integer').__doc__
+        self.assertTrue(len(m) > 1)
 
-    def test_list_length(self):
-        """The argument 'list' can be an iterable datatype (aside from sets)
-        of any length, including 1 or 0 members, except for tuples, which need
-        at least 2 members to be evaluated as that type.
-        """
-        # empty iterables produce no output
-        self.assertEqual(max_integer([]), None)
-        self.assertEqual(max_integer(()), None)
-        self.assertEqual(max_integer(''), None)
-        # length of 1 element simply returns that element for lists and strings
-        self.assertEqual(max_integer([5]), 5)
-        self.assertEqual(max_integer('a'), 'a')
-        # but a single member tuple is just evaulated as that member
-        self.assertRaises(TypeError, max_integer, (5))
+    def test_function_docstring(self):
+        """Tests for funstion docstring"""
+        f = max_integer.__doc__
+        self.assertTrue(len(f) > 1)
 
-    def test_first_list_dimension_type(self):
-        """ASCII chars are implicity converted to int by '>' comparison.
-        Strings need to be with their own type, but ints, floats, and bools
-        can all be evaluated together: True as 1, and False as 0. If largest
-        value is a float, it is returned as a float.
-        """
-        # strings compare ASCII values
-        self.assertEqual(max_integer(['a', 'b']), 'b')
-        # but no mixing with other types
-        self.assertRaises(TypeError, max_integer, [3, 'a'])
-        # ints and floats evaluate togther
-        self.assertEqual(max_integer([3, 5.0]), 5.0)
-        self.assertEqual(max_integer([3, -5.3456]), 3)
-        # as well as with bools
-        self.assertEqual(max_integer([-1, -.5, False]), False)
-        self.assertEqual(max_integer([5, .544, True]), 5)
+    def test_empty_list(self):
+        """Tests for empty list []"""
+        e = []
+        self.assertIsNone(max_integer(e))
 
-    def test_higher_list_dimensions(self):
-        """First dimension list members can themselves also be iterables (except
-        sets, as they always return <list>[0].) Those iterables can be of
-        varying length in the same dimension, but must all be of the same
-        dimensional depth to avoid a TypeError in comparison. For comparison of
-        any values in elements with dimensions beyond the first, it will always
-        be the first value to be compared by the program: <list>[i][0][0]...,
-        <list>[i + 1][0][0]..., ...
-        """
-        # 2nd dimension lists of variable length but same depth
-        self.assertEqual(max_integer([[5, 4, 1], [6, 3], []]), [6, 3])
-        # same for tuples and strings
-        self.assertEqual(max_integer([(5, 4, 1), (6, 3), ()]), (6, 3))
-        self.assertEqual(max_integer(['azzz', 'byy', 'cx']), 'cx')
-        # higher dimensions are possible, but all must be same depth, and only
-        # first members are compared
-        self.assertEqual(max_integer([[[1, 2], [2], []], [[4], [5]], [[6]]]),
-                         [[6]])
-        self.assertEqual(max_integer([[[8, 2], [2], []], [[4], [5]], [[6]]]),
-                         [[8, 2], [2], []])
-        # list or tuple member sets always return index 0, so are not useful
-        self.assertEqual(max_integer([{5, 4}, {6, 3, 1}, {20}]), {4, 5})
+    def test_no_args(self):
+        """Tests for no arguments passed to func"""
+        self.assertIsNone(max_integer())
 
-if __name__ == '__main__':
+    def test_one_element(self):
+        """Tests for only one number in the list"""
+        o = [1]
+        self.assertEqual(max_integer(o), 1)
+
+    def test_positive_end(self):
+        """Tests for all positive with max at end"""
+        e = [2, 10, 8, 36, 14, 50]
+        self.assertEqual(max_integer(e), 50)
+
+    def test_positive_middle(self):
+        """Tests for all positive with max in middle"""
+        m = [2, 10, 8, 360, 14, 50]
+        self.assertEqual(max_integer(m), 360)
+
+    def test_positive_beginning(self):
+        """Tests for all positive with max at beginning"""
+        b = [200, 10, 8, 36, 14, 50]
+        self.assertEqual(max_integer(b), 200)
+
+    def test_one_negative(self):
+        """Tests for list with one negative number"""
+        on = [200, 10, 8, -36, 14, 50]
+        self.assertEqual(max_integer(on), 200)
+
+    def test_all_negative(self):
+        """Tests for list with all negative numbers"""
+        n = [-6, -50, -75, -1, -100]
+        self.assertEqual(max_integer(n), -1)
+
+    def test_none(self):
+        """Tests for passing none as argument"""
+        with self.assertRaises(TypeError):
+            max_integer(None)
+
+    def test_non_int_arg(self):
+        """Tests for a non-int type in list"""
+        string = [1, 2, "Hello", 4, 5]
+        with self.assertRaises(TypeError):
+            max_integer(string)
+
+if __name__ == "__main__":
     unittest.main()

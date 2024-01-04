@@ -1,53 +1,31 @@
 #include "lists.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-/*
- * is_palindrome - function with one argument
- * @head: pointer to linked list
- *
- * Description: check if value singly linked list is palindrome
- * Return: 1 if true or 0 if false
+/**
+ * palindrom -  recursive palind or not
+ * @head: head list
+ * Return: 0 if it is not a palindrome
+ * 1 if it is a palindrome
  */
 int is_palindrome(listint_t **head)
 {
-	listint_t *ptr;
-	int count = 0, count2 = 0, half;
-	int *buf = NULL;
-
-	if (!head)
-		return (0);
-	if (!*head)
+	if (head == NULL || *head == NULL)
 		return (1);
-	ptr = *head;
-	while (ptr && ptr->next)
-	{
-		ptr = ptr->next;
-		count++;
-	}
-	buf = malloc(sizeof(int) * count);
-	if (!buf)
-		return (0);
-
-	ptr = *head;
-	count = 0;
-	while (ptr)
-	{
-		buf[count] = ptr->n;
-		count++;
-		ptr = ptr->next;
-	}
-	half = count / 2;
-
-	while (half)
-	{
-		if (buf[count2] != buf[count - 1])
-			return (0);
-		half--;
-		count2++;
-		count--;
-	}
-	free(buf);
-	return (1);
+	return (aux_palind(head, *head));
 }
 
+/**
+ * aux_palind - funct to know if is palindrome
+ * @head: head list
+ * @end: end list
+ */
+int aux_palind(listint_t **head, listint_t *end)
+{
+	if (end == NULL)
+		return (1);
+	if (aux_palind(head, end->next) && (*head)->n == end->n)
+	{
+		*head = (*head)->next;
+		return (1);
+	}
+	return (0);
+}

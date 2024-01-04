@@ -1,14 +1,6 @@
 #!/usr/bin/python3
-
-import hidden_4
-
-def main():
-    module_members = dir(hidden_4)
-
-    for member in module_members:
-        if "__" not in member:
-            print(member)
-
 if __name__ == "__main__":
-    main()
-
+    import hidden_4
+    for str in range(len(dir(hidden_4))):
+        if dir(hidden_4)[str][:2] != "__":
+            print("{:s}".format(dir(hidden_4)[str]))

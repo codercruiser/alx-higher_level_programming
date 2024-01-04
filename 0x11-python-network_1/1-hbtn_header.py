@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-"""0x11. Python - Network #1, task 1. Response header value #0
 """
+It sends a reques to the url and display
+the X-Requested-Id variable
+"""
+import sys
+import urllib.request
 
 if __name__ == "__main__":
-    from urllib import request
-    from sys import argv
-
-    with request.urlopen(argv[1]) as response:
-        print(response.getheader('X-Request-Id'))
+    with urllib.request.urlopen(sys.argv[1]) as response:
+        page = response.getheader('X-Request-Id')
+        print(page)

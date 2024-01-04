@@ -1,55 +1,58 @@
 The ``3-say_my_name`` module
-==================================
-This module contains only one function: say_my_name. Error in project formatting scheme advances file numbering +1 for every task after 0: this is actually task 2.
+======================
 
 Using ``say_my_name``
-------------------------
+-------------------
 
-First import
-~~~~~~~~~~~~
-First import ``say_my_name`` from the ``3-say_my_name.py`` module. Since the file name contains a numeral, you can't use the simple ``from 3-say_my_name.py import say_my_name``. You can instead use the following syntax:
+Importing the function from the module:
+	>>> say_my_name = __import__("3-say_my_name").say_my_name
 
-    >>> say_my_name = __import__('3-say_my_name').say_my_name
+Checking for module docstring:
+	 >>> m = __import__("3-say_my_name").__doc__
+	 >>> len(m) > 1
+	 True
 
-Normal use
-~~~~~~~~~~
-This function takes two strings meant to represent your given name and family name, and prints the full name:
+Checking for function docstring:
+	 >>> f = __import__("3-say_my_name").say_my_name.__doc__
+         >>> len(f) > 1
+         True
 
-    >>> say_my_name("Dave", "Bowman")
-    My name is Dave Bowman
+Checking for passing None as first name:
+	 >>> say_my_name(None, "Hello")
+	 Traceback (most recent call last):
+         ...
+         TypeError: first_name must be a string
 
-The function will accept empty strings or just one argument. Since the last name defaults to an empty string, a single argument will be treated as a first name, including a space character:
+Checking for passing None as last name:
+	 >>> say_my_name("Hello", None)
+	 Traceback (most recent call last):
+         ...
+         TypeError: last_name must be a string
 
-empty last name (space before newline):
-    >>> say_my_name("Frank", "")
-    My name is Frank 
+Checking for wrong type as first name:
+         >>> say_my_name(1, "Hello")
+         Traceback (most recent call last):
+         ...
+         TypeError: first_name must be a string
 
-only one name (space before newline):
-    >>> say_my_name("Frank")
-    My name is Frank 
+Checking for wrong type as last name:
+         >>> say_my_name("Hello", [4])
+         Traceback (most recent call last):
+         ...
+         TypeError: last_name must be a string
 
-empty first name (no space before newline):
-    >>> say_my_name("", "Poole")
-    My name is Poole
+Checking for normal use:
+	 >>> say_my_name("Hello", "World")
+	 My name is Hello World
+	 >>> say_my_name("You know nothing", "John Snow")
+	 My name is You know nothing John Snow
 
-Exceptions
-~~~~~~~~~~
-If first name string argument is not a string, a TypeError of "first_name must be a string" will arise. Similarly, "last_name must be a string" for the last name argument.
+Checking for 1 arg:
+	 >>> say_my_name("Hello")
+	 My name is Hello 
 
-first name is not a string:
-    >>> say_my_name(2001, "Bowman")
-    Traceback (most recent call last):
-        ...
-    TypeError: first_name must be a string
-
-only name (treated as first) is not a string:
-    >>> say_my_name(2001)
-    Traceback (most recent call last):
-        ...
-    TypeError: first_name must be a string
-
-last name is not a string:
-    >>> say_my_name("Dave", 2010)
-    Traceback (most recent call last):
-        ...
-    TypeError: last_name must be a string
+Checking for more than 2 args:
+	 >>> say_my_name("Hello", "World", "hi")
+	 Traceback (most recent call last):
+	 ...
+	 TypeError: say_my_name() takes from 1 to 2 positional arguments but 3 were given

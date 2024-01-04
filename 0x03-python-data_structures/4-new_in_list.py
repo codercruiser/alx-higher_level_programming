@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-def new_in_list(unique_list, unique_idx, unique_element):
-    new_list = unique_list.copy()
-    if unique_idx >= 0 and unique_idx < len(unique_list):
-        new_list[unique_idx] = unique_element
+def new_in_list(my_list, idx, element):
+    if ((idx < 0) or (idx >= len(my_list))):
+        return my_list
+    new_list = []
+    for i in range(len(my_list)):
+        new_list.append(my_list[i])
+    new_list[idx] = element
     return new_list
-

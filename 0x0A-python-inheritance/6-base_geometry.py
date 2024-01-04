@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-""" 0x0A. Python - Inheritance, task 6 """
+"""
+Contains the class BaseGeometry
+"""
 
 
 class BaseGeometry:
-    """Intentionally empty area() method.
-
-    """
+    """A class with public attribute area"""
     def area(self):
-        """Unimplemented, only raises exception to notify user.
-
-        """
-        raise Exception('area() is not implemented')
+        """raises an exception when called"""
+        raise Exception("area() is not implemented")

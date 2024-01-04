@@ -1,3 +1,3 @@
 #!/bin/bash
-# navigates 1 redirect, and supplies values for `user_id` and header `Origin`
-curl -sd 'user_id=98' -X PUT -H 'Origin: HolbertonSchool' -L 0.0.0.0:5000/catch_me
+# curl that causes a server to respond with a message
+curl -sX PUT -L -d "user_id=98" --header "origin: HolbertonSchool" 0.0.0.0:5000/catch_me

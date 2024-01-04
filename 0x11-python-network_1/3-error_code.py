@@ -1,14 +1,17 @@
 #!/usr/bin/python3
-"""0x11. Python - Network #1, task 3. Error code #0
 """
+send a request and display the body of the error
+"""
+import urllib.request
+import urllib.error
+import sys
+
 
 if __name__ == "__main__":
-    from urllib import request, error
-    from sys import argv
-
+    url = sys.argv[1]
     try:
-        with request.urlopen(argv[1]) as response:
-            html = response.read()
-        print(html.decode(response.headers.get_content_charset()))
-    except error.URLError as err:
-        print('Error code: {}'.format(err.code))
+        with urllib.request.urlopen(url) as response:
+            page = response.read()
+            print(page.decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        print("Error code: {}".format(e.code))
